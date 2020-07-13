@@ -1,0 +1,40 @@
+= wrap_layout :layout do
+  %header.main-header.post-head{cover}
+    %nav.main-nav.clearfix{class: cover? ? 'overlay' : nil}
+      - if blog_settings.logo.present?
+        %a.blog-logo{href: home_path}
+          = image_tag blog_settings.logo, alt: blog_settings.name
+      - if blog_settings.navigation
+        %a.menu-button.icon-menu{href: '#'}
+          %span.word Menu
+
+  %main.content{role: :main}
+    %article.post
+      %header.post-header
+        %h1.post-title= current_article.title
+        %section.post-meta
+          %time.post-date{datetime: current_article.date.strftime('%Y-%m-%d')}
+            = current_article.date.strftime(blog_settings.date_format)
+          - if tags?
+            on #{tags}
+
+      %section.post-content= yield
+
+      %footer.post-footer
+        %p
+          %a{href: "https://github.com/poblahblahblah/cookbook/commits/master/source/#{current_article.path}.markdown" } Recipe Revisions
+          (#{`git log source/#{current_article.path}.markdown | grep Author`.scan(/Author/).count - 1} total)
+
+  %aside.read-next
+    - if prev_article = current_article.previous_article
+      - attributes = { href: prev_article.url }.merge(cover(prev_article))
+      %a.read-next-story{attributes}
+        %section.post
+          %h2= prev_article.title
+          %p #{read_next_summary(prev_article, 19)}&hellip;
+    - if next_article = current_article.next_article
+      - attributes = { href: next_article.url }.merge(cover(next_article))
+      %a.read-next-story.prev{attributes}
+        %section.post
+          %h2= next_article.title
+          %p #{read_next_summary(next_article, 19)}&hellip;
