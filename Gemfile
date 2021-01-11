@@ -23,7 +23,7 @@ gem 'sprockets', '>= 3.7.2'
 
 # Code syntax highlighting
 gem 'middleman-syntax', '~> 3.0.0'
-gem 'redcarpet', '~> 3.4.0'
+gem 'redcarpet', '~> 3.5.1'
 
 # For "summary"-Helper
 gem 'nokogiri', '~> 1.10.8'
